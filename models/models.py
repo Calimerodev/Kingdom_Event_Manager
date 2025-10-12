@@ -1,18 +1,14 @@
 import sqlite3
 
 class Depend_Resources():
-    pass
-
-
-class Incompatibles_Resources():
     def __init__(self):
         self.connection = sqlite3.Connection("DATA BASE.db")
         self.cursor = self.connection.cursor()
-
+    
 
     def create(self):
         sql = """
-            CREATE TABLE Incmpatibles_Rsources (
+            CREATE TABLE Depend_Resources (
                 id INTEGER PRIMARY KEY AUTOINCREMENT,
                 id_resource1 INTEGER,
                 id_resource2 INTEGER
@@ -23,8 +19,171 @@ class Incompatibles_Resources():
         self.connection.commit()
 
 
-    def insert():
-        pass
+    def insert(self, id_resource1, id_resource2):
+            sql = f"""
+                INSERT INTO Depend_Resources(
+                    id,
+                    id_resource1,
+                    id_resource2
+                ) VALUES (
+                    NULL,
+                    {id_resource1},
+                    {id_resource2}
+                )
+            """
+            self.cursor.execute(sql)
+            self.connection.commit()
+
+
+    def getall(self):
+        sql = """
+            SELECT * FROM Depend_Resources
+        """
+        self.cursor.execute(sql)
+        return self.cursor.fetchall()
+
+
+    def get_element(self,
+                    id_depend = None,
+                    id_resource1 = None,
+                    id_resource2 = None
+                ):
+        
+        all_depend = self.getall()
+        
+        for depend in all_depend:
+            
+            if id_depend == None:
+                if depend[1] == id_resource1 and depend[2] == id_resource2:
+                    return depend
+
+            else:            
+                if depend[0] == id_depend:
+                    return depend
+    
+        return None
+
+
+    def delete_id(self,id_depend):
+        sql = """
+            DELETE FROM Depend_Resources WHERE id = ?
+        """
+        self.cursor.execute(sql , (f"{id_depend}",))
+        self.connection.commit()
+
+
+    def update(
+            self,
+            new_id_resource1 = None,
+            new_id_resource2 = None,
+            id_depend = None
+        ):
+        
+        change_id_resource1 = "" if new_id_resource1 == None else f"id_resource1 = {new_id_resource1}"
+        change_id_resource2 = "" if new_id_resource2 == None else f",id_resource2 = {new_id_resource2}"
+
+        sql = f"""
+            UPDATE Depend_Resources SET
+                {change_id_resource1}
+                {change_id_resource2}
+            WHERE id = ?
+        """
+
+        self.cursor.execute(sql, (id_depend,))
+        self.connection.commit()
+
+
+class Incompatibles_Resources():
+    def __init__(self):
+        self.connection = sqlite3.Connection("DATA BASE.db")
+        self.cursor = self.connection.cursor()
+
+
+    def create(self):
+        sql = """
+            CREATE TABLE Incompatibles_Resources (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                id_resource1 INTEGER,
+                id_resource2 INTEGER
+            )
+        """
+
+        self.cursor.execute(sql)
+        self.connection.commit()
+
+
+    def insert(self, id_resource1, id_resource2):
+            sql = f"""
+                INSERT INTO Incompatibles_Resources(
+                    id,
+                    id_resource1,
+                    id_resource2
+                ) VALUES (
+                    NULL,
+                    {id_resource1},
+                    {id_resource2}
+                )
+            """
+            self.cursor.execute(sql)
+            self.connection.commit()
+
+
+    def getall(self):
+        sql = """
+            SELECT * FROM Incompatibles_Resources
+        """
+        self.cursor.execute(sql)
+        return self.cursor.fetchall()
+
+
+    def get_element(self,
+                    id_incompatible = None,
+                    id_resource1 = None,
+                    id_resource2 = None
+                ):
+        
+        all_incompatible = self.getall()
+        
+        for incompatible in all_incompatible:
+            
+            if id_incompatible == None:
+                if incompatible[1] == id_resource1 and incompatible[2] == id_resource2:
+                    return incompatible
+
+            else:            
+                if incompatible[0] == id_incompatible:
+                    return incompatible
+    
+        return None
+
+
+    def delete_id(self,id_incompatible):
+        sql = """
+            DELETE FROM Incompatibles_Resources WHERE id = ?
+        """
+        self.cursor.execute(sql , (f"{id_incompatible}",))
+        self.connection.commit()
+    
+
+    def update(
+            self,
+            new_id_resource1 = None,
+            new_id_resource2 = None,
+            id_incompatible = None
+        ):
+        
+        change_id_resource1 = "" if new_id_resource1 == None else f"id_resource1 = {new_id_resource1}"
+        change_id_resource2 = "" if new_id_resource2 == None else f",id_resource2 = {new_id_resource2}"
+
+        sql = f"""
+            UPDATE Incompatibles_Resources SET
+                {change_id_resource1}
+                {change_id_resource2}
+            WHERE id = ?
+        """
+
+        self.cursor.execute(sql, (id_incompatible,))
+        self.connection.commit()
 
 
 class Events_Resources_Relation():
@@ -67,12 +226,22 @@ class Events_Resources_Relation():
         return self.cursor.fetchall()
     
 
-    def get_element(self, id_relation):
-        all_events = self.getall()
+    def get_element(
+                    self,
+                    id_relation = None,
+                    id_event=None,
+                    id_resource = None
+                ):
+        all_reations = self.getall()
         
-        for event in all_events:
-            if event[0] == id_relation:
-                return event
+        for  relation in all_reations:
+            if id_relation == None:
+                if relation[1] == id_event and relation[2] == id_resource:
+                    return relation
+            
+            else:
+                if relation[0] == id_relation:
+                    return relation
             
         return None
     
@@ -202,9 +371,8 @@ class Resources(Events_Resources_Relation):
         self.connection.commit()
 
 
-class Events(Events_Resources_Relation):
+class Events():
     def __init__(self):
-        super().__init__()
         self.connection = sqlite3.Connection("DATA BASE.db")
         self.cursor = self.connection.cursor()
 
@@ -304,5 +472,3 @@ class Events(Events_Resources_Relation):
         self.cursor.execute(sql , (id_event,))
         self.connection.commit()
 
-
-data = Incompatibles_Resources()
