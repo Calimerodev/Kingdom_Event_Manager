@@ -1,3 +1,5 @@
+<title font_size:20px>Medieval Kingdom</title>
+
 En un reino muy lejano en europa es el anio 100 AC y eres el Rey y
 gobiernas tu reino y las aldeas de los alrededores y tu como Rey
 debes administrar todos los eventos que ocurren lo recursos del
