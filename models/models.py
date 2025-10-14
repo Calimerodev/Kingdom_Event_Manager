@@ -384,6 +384,7 @@ class Events():
                 name  TEXT,
                 place TEXT,
                 resources INTEGER,
+                execution BOOL, 
                 start TEXT,
                 end TEXT
             )
@@ -401,40 +402,59 @@ class Events():
         return self.cursor.fetchall()
 
 
-    def get_element(self , id_event , id_resource):
+    def get_element(
+            self,
+            id_event = None,
+            name_event = None,
+            place_event = None,
+            resources_event = None,
+            execution_event = None,
+            start_event = None,
+            end_event = None
+            ):
         
         all_events = self.getall()
         
+        execution_event = 0 if execution_event == "FALSE" else 1
+        print(execution_event)
         for event in all_events:
-            if event[1] == id_event and event[2] == id_resource:
-                return event
+            print(event)
+
+            if id_event:
+                if event[0] == id_event:
+                    return event
             
+            else:
+                if name_event == event[1] and place_event == event[2] and resources_event == event[3] and execution_event == event[4] and start_event == event[5] and end_event == event[6]:
+                    return event
+
         return None
 
 
     def insert(
             self,
             name_event,
-            type_event,
+            place_event,
             resources_event,
+            execution_event,
             start_event,
             end_event
-            ):
+        ):
         
         sql = f"""
-            INSERT INTO Events(id,name,place,resources,start,end) VALUES (
+            INSERT INTO Events(id,name,place,resources,execution,start,end) VALUES (
                 NULL,
                 '{name_event}',
-                '{type_event}',
+                '{place_event}',
                 {resources_event},
+                {execution_event},
                 '{start_event}',
                 '{end_event}'
             )
         """
-        self.cursor.execute(sql)
+        self.cursor.execute(sql)      
         self.connection.commit()
-        return True        
-
+        return True
 
     def delete_id(self,id_event):
         sql = """
@@ -442,33 +462,36 @@ class Events():
         """
         self.cursor.execute(sql , (f"{id_event}",))
         self.connection.commit()
+        return True
 
 
     def update(
             self,
             new_name_event = None,
-            new_type_event=None,
+            new_place_event=None,
             new_resource_event=None,
+            update_execution = None,
             new_start_event=None,
             new_end_event=None,
             id_event = None
         ):
         
         change_name = "" if new_name_event == None else f"name = '{new_name_event}'"
-        change_type = "" if new_type_event == None else f",place = {new_type_event}"
+        change_place = "" if new_place_event == None else f",place = {new_place_event}"
         change_resource = "" if new_resource_event == None else f",resources = '{new_resource_event}'"
+        change_execution = "" if update_execution == None else f",execution = {update_execution}"
         change_start = "" if new_start_event == None else f",start = '{new_start_event}'"
         change_end = "" if new_end_event == None else f",end = '{new_end_event}'"
         
         sql = f"""
             UPDATE Events SET 
                 {change_name}
-                {change_type}
+                {change_place}
                 {change_resource}
+                {change_execution}
                 {change_start}
                 {change_end}
-            WHERE id = ? 
+            WHERE id = ?
         """
         self.cursor.execute(sql , (id_event,))
         self.connection.commit()
-
