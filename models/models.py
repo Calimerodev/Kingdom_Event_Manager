@@ -477,8 +477,8 @@ class Events():
         ):
         
         change_name = "" if new_name_event == None else f"name = '{new_name_event}'"
-        change_place = "" if new_place_event == None else f",place = {new_place_event}"
-        change_resource = "" if new_resource_event == None else f",resources = '{new_resource_event}'"
+        change_place = "" if new_place_event == None else f",place = '{new_place_event}'"
+        change_resource = "" if new_resource_event == None else f",resources = {new_resource_event}"
         change_execution = "" if update_execution == None else f",execution = {update_execution}"
         change_start = "" if new_start_event == None else f",start = '{new_start_event}'"
         change_end = "" if new_end_event == None else f",end = '{new_end_event}'"
