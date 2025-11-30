@@ -30,3 +30,19 @@ class NavBar(BoxLayout):
     def __init__(self, **kwargs):
         super().__init__(**kwargs)
         pass
+
+#class for center panel
+class CenterPanel(BoxLayout):
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        #Background Color
+        with self.canvas.before:
+            Color(0.15, 0.15, 0.15, 0.6)
+            self.rect = Rectangle(size=self.size , pos=self.pos)
+            
+            self.bind(size=self._update_rect , pos=self._update_rect)
+
+        
+    def _update_rect(self , *args):
+        self.rect.size = self.size
+        self.rect.pos = self.pos

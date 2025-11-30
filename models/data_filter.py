@@ -26,8 +26,7 @@ class Manager_Events():
                 if i == j:
                     continue
                 if(Incompatibles_Resources().get_element(resources[i],resources[j]) != None or Incompatibles_Resources().get_element(resources[j],resources[i]) != None):
-                    return "Recursos Incompatibles"
-
+                    return False
 
         Events().insert(
             name_event=name_event,
@@ -56,10 +55,26 @@ class Manager_Events():
             new_name_event=actual_event[1],
             new_place_event=actual_event[2],
             new_resource_event=0,
-            new_start_event=actual_event[4],
-            new_end_event=actual_event[5],
+            new_start_event=actual_event[5],
+            new_end_event=actual_event[6],
             id_event=actual_event[0]
         )
+
+        print(Events().getall())
+
+        return True
+    
+    
+    def filter(self, place=""):
+        ls_events = []
+        all_event = Events().getall()
+
+        for e in all_event:
+            if e[2] == place:
+                ls_events.append(e)
+
+        return ls_events
+        
 
 
     def delete_event(self, id_event):
@@ -70,7 +85,7 @@ class Manager_Events():
             if relation[1] == id_event:
                 Events_Resources_Relation().delete_id(relation[0])
         
-        Events.delete_id(id_event=id_event)
+        Events().delete_id(id_event=id_event)
     
     
     def show_resouce_event(self, id_event):
