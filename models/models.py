@@ -384,7 +384,7 @@ class Events():
                 name  TEXT,
                 place TEXT,
                 resources INTEGER,
-                execution BOOL, 
+                execution INTEGER, 
                 start TEXT,
                 end TEXT
             )
@@ -415,8 +415,6 @@ class Events():
         
         all_events = self.getall()
         
-        execution_event = 0 if execution_event == "FALSE" else 1
-        print(execution_event)
         for event in all_events:
             print(event)
 
@@ -428,7 +426,7 @@ class Events():
                 if name_event == event[1] and place_event == event[2] and resources_event == event[3] and execution_event == event[4] and start_event == event[5] and end_event == event[6]:
                     return event
 
-        return None
+        return (-1,-1,-1,-1,-1,-1,-1)
 
 
     def insert(
@@ -467,21 +465,21 @@ class Events():
 
     def update(
             self,
-            new_name_event = None,
-            new_place_event=None,
-            new_resource_event=None,
-            update_execution = None,
-            new_start_event=None,
-            new_end_event=None,
-            id_event = None
+            new_name_event = '*',
+            new_place_event='*',
+            new_resource_event='*',
+            update_execution = '*',
+            new_start_event='*',
+            new_end_event='*',
+            id_event = '*'
         ):
-        
-        change_name = "" if new_name_event == None else f"name = '{new_name_event}'"
-        change_place = "" if new_place_event == None else f",place = '{new_place_event}'"
-        change_resource = "" if new_resource_event == None else f",resources = {new_resource_event}"
-        change_execution = "" if update_execution == None else f",execution = {update_execution}"
-        change_start = "" if new_start_event == None else f",start = '{new_start_event}'"
-        change_end = "" if new_end_event == None else f",end = '{new_end_event}'"
+        print("Updating Event...") 
+        change_name = "" if new_name_event == '*' else f"name = '{new_name_event}'"
+        change_place = "" if new_place_event == '*' else f",place = '{new_place_event}'"
+        change_resource = "" if new_resource_event == '*' else f",resources = {new_resource_event}"
+        change_execution = "" if update_execution == '*' else f",execution = {update_execution}"
+        change_start = "" if new_start_event == '*' else f",start = '{new_start_event}'"
+        change_end = "" if new_end_event == '*' else f",end = '{new_end_event}'"
         
         sql = f"""
             UPDATE Events SET 

@@ -33,7 +33,7 @@ class ScreenMain(Screen):
 
         root.add_widget(map)
 
-        #Navegation Bar
+        #Navegation Bar------------------------------------------------------------------------------------>
         nav_bar = BoxLayout(
             orientation="horizontal",
             size_hint=(1 , None),
@@ -67,6 +67,7 @@ class ScreenMain(Screen):
             
             nav_bar_btn = Button(
                 background_normal=path,
+                background_down=path,
                 size_hint=(None , None),
                 size=(200 , 100),
                 on_press = x
@@ -74,7 +75,7 @@ class ScreenMain(Screen):
             nav_bar.add_widget(nav_bar_btn)   
 
         root.add_widget(nav_bar)
-        #End Navegation Bar
+        #End Navegation Bar-------------------------------------------------------------------------------->
 
         #Events Panel
         self.panel_Events_manager = LateralPanel(
@@ -85,7 +86,7 @@ class ScreenMain(Screen):
             spacing=10
         )
 
-        #Events Panel
+        #Events Panel--------------------------------------------------------------------------------->
         text_Events_panel = Label(text="Events(fase de prueba)")
         btn_panel_Events_close = create_close_btn()
         btn_panel_Events_close.bind(on_press=self.close_panel_Events)
@@ -93,7 +94,7 @@ class ScreenMain(Screen):
         self.panel_Events_manager.add_widget(btn_panel_Events_close)
         
         #Region Panel
-        #########################################################################>
+        #--------------------------------------------------------------------------------------------->
         #Resources Panel
         self.panel_Resources_manager =  LateralPanel(
                                 orientation = "vertical",
@@ -125,7 +126,7 @@ class ScreenMain(Screen):
 
         root.add_widget(btn_kingdom_map)
 
-        #LIGHTHOUSE------------------------------------------------------->
+        #LIGHTHOUSE------------------------------------------------------------------>
         btn_lighthouse = Button(
                         background_normal="assets/buttons/Lighthouse_btn.png",
                         background_down = "assets/buttons/Lighthouse_btn_down.png",
@@ -135,6 +136,12 @@ class ScreenMain(Screen):
                         on_press=self.change_screen_village_lighthouse
                     )
         root.add_widget(btn_lighthouse)
+        #----------------------------------------------------------------------------->
+        #
+        #Resources-------------------------------------------------------------------->
+        
+        #----------------------------------------------------------------------------->
+        #
         #TEST------------------------------------------------------------>
         btn_test = Button(
                         text="Test",

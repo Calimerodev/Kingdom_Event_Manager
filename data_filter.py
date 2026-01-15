@@ -1,6 +1,23 @@
 import sqlite3
 from models.models import *
 
+
+class SegmentTree():
+    def __init__(self) -> None:
+        pass
+
+    
+    def query():
+        pass
+
+
+    def update():
+        pass
+
+
+    def Lazy():
+        pass
+
 class Manager_Events():
     
     def insert_event(
@@ -26,8 +43,9 @@ class Manager_Events():
                 if i == j:
                     continue
                 if(Incompatibles_Resources().get_element(resources[i],resources[j]) != None or Incompatibles_Resources().get_element(resources[j],resources[i]) != None):
-                    return False
-    
+                    return "Recursos Incompatibles"
+
+
         Events().insert(
             name_event=name_event,
             place_event=place_event,
@@ -37,7 +55,7 @@ class Manager_Events():
             end_event=end_event
         )
 
-        
+
         actual_event = Events().get_element(
                                     name_event=name_event,
                                     place_event=place_event,
@@ -46,8 +64,6 @@ class Manager_Events():
                                     start_event=start_event,
                                     end_event=end_event
                                 )
-        #if actual_event[0] == -1:
-        #    x = 1/0
 
         for resource in resources:
             #print(actual_event , resource)
@@ -57,27 +73,10 @@ class Manager_Events():
             new_name_event=actual_event[1],
             new_place_event=actual_event[2],
             new_resource_event=0,
-            update_execution=0,
-            new_start_event=actual_event[5],
-            new_end_event=actual_event[6],
+            new_start_event=actual_event[4],
+            new_end_event=actual_event[5],
             id_event=actual_event[0]
         )
-
-        print(Events().getall())
-
-        return True
-    
-    
-    def filter(self, place=""):
-        ls_events = []
-        all_event = Events().getall()
-
-        for e in all_event:
-            if e[2] == place:
-                ls_events.append(e)
-
-        return ls_events
-        
 
 
     def delete_event(self, id_event):
@@ -104,25 +103,4 @@ class Manager_Events():
 
 
     def search_hole(self):
-        pass
-
-
-class SegmntTree():
-    def __init__(self):
-        pass
-
-    
-    def lazy(self):
-        pass
-    
-
-    def build(self):
-        pass
-
-
-    def query(self):
-        pass
-
-
-    def update(self):
         pass
