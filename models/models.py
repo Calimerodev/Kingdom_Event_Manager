@@ -493,3 +493,102 @@ class Events():
         """
         self.cursor.execute(sql , (id_event,))
         self.connection.commit()
+
+#Table for the quantity resources for each event
+class Quantity_Resources():
+    def __init__(self):
+        self.connection = sqlite3.Connection("DATA BASE.db")
+        self.cursor = self.connection.cursor()
+    
+
+    def create(self):
+            sql = """
+                CREATE TABLE Quantity_Resources (
+                    id  INTEGER PRIMARY KEY AUTOINCREMENT,
+                    id_resource INTEGER,
+                    id_event INTEGER,
+                    quantity INTEGER
+                )
+            """
+
+            self.cursor.execute(sql)
+            self.connection.commit()
+
+
+    def getall(self):
+        sql = """
+            SELECT * FROM Quantity_Resources
+        """
+        self.cursor.execute(sql)
+        return self.cursor.fetchall()
+
+
+    def get_element(
+            self,
+            id_qntt = None,
+            id_event = None,
+            id_resource = None,
+            qntt = None,
+        ):
+        
+        all_qntts = self.getall()
+        
+        qntts_selected = []
+
+        for qnt in all_qntts:
+            if qnt[2] == id_event:
+                qntts_selected.append(qnt)
+
+        return qntts_selected
+
+
+    def insert(
+            self,
+            id_resource,
+            id_event,
+            qnt,
+        ):
+        
+        sql = f"""
+            INSERT INTO Quantity_Resources(id,id_resource,id_event,quantity) VALUES (
+                NULL,
+                {id_resource},
+                {id_event},
+                {qnt}
+            )
+        """
+        self.cursor.execute(sql)      
+        self.connection.commit()
+        return True
+
+
+    def delete_id_event(self, id_event):
+        sql = """
+            DELETE FROM Quantity_Resources WHERE id_event = ?
+        """
+        self.cursor.execute(sql , (f"{id_event}",))
+        self.connection.commit()
+        return True
+
+
+    def update(
+            self,
+            id_qntt,
+            quantity='*',
+            id_resource='*',
+            id_event = '*'
+        ):
+        print("Updating Quantity Resources...") 
+        change_id_event = "" if id_event == '*' else f",id_event = {id_event}"
+        change_id_resource = "" if id_resource == '*' else f"id_resource = '{id_resource}'"
+        change_quantity = "" if quantity == '*' else f",quantity = {quantity}"
+        
+        sql = f"""
+            UPDATE Quantity_Resources SET 
+                {change_id_resource}
+                {change_id_event}
+                {change_quantity}
+            WHERE id = ?
+        """
+        self.cursor.execute(sql , (id_qntt,))
+        self.connection.commit()

@@ -73,7 +73,10 @@ class RowTable(GridLayout):
 
         #init Cells
         for d in data:
-            self.add_widget(Label(text = d , color=(1,1,1,1)))
+            if type(d) == str:
+                self.add_widget(Label(text = d , color=(1,1,1,1) , halign = 'left'))
+            else:
+                self.add_widget(d)
 
         #Move Detect
         Window.bind(mouse_pos=self.on_mouse_pos)

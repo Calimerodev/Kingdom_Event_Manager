@@ -7,15 +7,15 @@ class SegmentTree():
         pass
 
     
-    def query():
+    def query(self):
         pass
 
 
-    def update():
+    def update(self):
         pass
 
 
-    def Lazy():
+    def Lazy(self):
         pass
 
 class Manager_Events():

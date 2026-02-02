@@ -38,7 +38,7 @@ class ScreenVillages(Screen):
 
 
 
-class miApp(App):
+class EventManagerApp(App):
     def build(self):
         sm = ScreenManager()
 

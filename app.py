@@ -1,4 +1,4 @@
 #Emmezo el sufrinmiento :(
-from UI import miApp
+from UI import EventManagerApp
 
-miApp().run()
+EventManagerApp().run()

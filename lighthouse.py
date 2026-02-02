@@ -14,7 +14,7 @@ from kivy.animation import Animation
 from kivy.graphics import Color , Rectangle
 from assets.Panels import *
 from assets.buttons.btns import *
-from kivy.uix.screenmanager import Screen , ScreenManager , SlideTransition
+from kivy.uix.screenmanager import FallOutTransition, Screen , ScreenManager , SlideTransition
 from kivy.uix.widget import Widget
 from main import * 
 from screentest import *
@@ -24,6 +24,7 @@ from models.data_filter import *
 from models.models import *
 from kivy.uix.scrollview import ScrollView
 from kivy.clock import Clock
+from assets import Notify
 
 class ScreenLightHouseVillage(Screen):
     #global Atributes
@@ -36,7 +37,8 @@ class ScreenLightHouseVillage(Screen):
         self.root = FloatLayout()
         map = Image(source="assets/imgs/lighthouse.png")
         self.root.add_widget(map) 
-
+        #Notification Manager
+        self.notif_manager = Notify.NotificationManager(self.root)
         btn_back = Button(
             text="Back",
             size_hint = (None , None),
@@ -87,11 +89,25 @@ class ScreenLightHouseVillage(Screen):
 
         events = Manager_Events().filter("lighthouse")
 
-        header = ['name' , 'start' , 'end']
+        header = ['name' , 'start' , 'end' , 'action']
 
         event_tmp = []
         for e in events:
-            tmp = (e[1] , e[5] , e[6])
+            del_btn = Button(
+                            text='',
+                            size_hint = (None , None),
+                            size = (47 , 47),
+                            border = (0,0,0,0),
+                            #keep_ratio=False,
+                            #allow_stretch=True,
+                            valign="middle",
+                            halign="left",
+                            background_down = 'assets/buttons/delete_btn_down.png',
+                            background_normal='assets/buttons/delete_btn.png', 
+                            on_press=self.on_press_delete_events
+                        )
+            del_btn.id = e[0]
+            tmp = (e[1] , e[5] , e[6] , del_btn)
             event_tmp.append(tmp)
         
         self.Table_Events = Table(header=header , rows=event_tmp , size_hint_y = None)
@@ -157,15 +173,34 @@ class ScreenLightHouseVillage(Screen):
         self.scroll_show_events.focus = True
 
 
+    def on_press_delete_events(self , instance):
+        Manager_Events().delete_event(instance.id)
+        self.update_table()
+
+
     def update_table(self): 
         self.scroll_show_events.remove_widget(widget=self.Table_Events)
         events = Manager_Events().filter("lighthouse")
 
-        header = ['name' , 'start' , 'end']
+        header = ['name' , 'start' , 'end' , 'action']
 
         event_tmp = []
         for e in events:
-            tmp = (e[1] , e[5] , e[6])
+            del_btn = Button(
+                            text='',
+                            size_hint = (None , None),
+                            size = (47 , 47),
+                            border = (0,0,0,0),
+                            #keep_ratio=False,
+                            #allow_stretch=True,
+                            valign="middle",
+                            halign="center",
+                            background_down = 'assets/buttons/delete_btn_down.png',
+                            background_normal='assets/buttons/delete_btn.png', 
+                            on_press=self.on_press_delete_events
+                        )
+            del_btn.id = e[0] 
+            tmp = (e[1] , e[5] , e[6] , del_btn)
             event_tmp.append(tmp)
         
         self.Table_Events = Table(header=header , rows=event_tmp , size_hint_y = None)
@@ -179,7 +214,7 @@ class ScreenLightHouseVillage(Screen):
     def create_event(self , instace):
         #Insert Event on Data Base if I Can
         if self.name_event_form.text == '' or self.start_event_form.text == '' or self.end_event_form.text == '':
-            print("Rellene todos los campos del formulario")
+            self.notif_manager.show_error('Error: Please fill in all fields')  
             return
 
         Manager_Events().insert_event(

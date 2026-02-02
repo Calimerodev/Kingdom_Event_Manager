@@ -81,13 +81,7 @@ class Manager_Events():
 
 
     def delete_event(self, id_event):
-        
-        all_relations = Events_Resources_Relation().getall()
-        
-        for relation in all_relations:
-            if relation[1] == id_event:
-                Events_Resources_Relation().delete_id(relation[0])
-        
+        #falta eliminar recursos asociados al evento !!!!!!!!!!!!!
         Events().delete_id(id_event=id_event)
     
     
